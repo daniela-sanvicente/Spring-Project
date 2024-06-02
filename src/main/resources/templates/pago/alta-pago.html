@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      lang="es">
+<head th:replace="~{plantillas/plantilla :: head}"></head>
+</head>
+<body>
+<header th:replace= "~{plantillas/plantilla :: navbar_loggedin}"></header>
+<main class="container text-center opacity-75 shadow-lg p-3 mb-5 bg-body-tertiary rounded">
+    <h1 th:text="${contenido}"></h1>
+    <form id="savePagoForm" th:action="@{/pago/salvar-pago}" th:object="${pago}" method="post">
+        <div th:if="${#fields.hasErrors('*')}" class='alert alert-danger' role="alert">
+            Verifique los siguientes errores
+            <ul>
+                <li th:each="err : ${#fields.errors('*')}" th:text="${err}"/>
+            </ul>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="cliente">Cliente</label>
+                    <select class="form-control" th:field="*{cliente}" id="cliente" name="cliente" required="requiered">
+                        <option th:each="selc : ${selectCliente}" th:value="${selc.id}" th:text="'Cliente: '+${selc.id} +' Nombre: '+${selc.nombre} +' Apellidos: '+${selc.apellidos}"/>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="orden">Orden</label>
+                    <select class="form-control" th:field="*{orden}" id="orden" name="orden" required="requiered">
+                        <option th:each="selo : ${selectOrden}" th:value="${selo.id}" th:text="'Orden: ' + ${selo.id}"/>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="metodoPago">Método Pago</label>
+                    <select class="form-control" th:field="*{metodoPago}" id="metodoPago" name="metodoPago" required="requiered">
+                        <option th:each="selp : ${selectMetodoPago}" th:value="${selp.id}" th:text="'Método de Pago: ' + ${selp.metodo}"/>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="emisor">Emisor</label>
+                    <input type="text" class="form-control" id="emisor" name="emisor"
+                           placeholder="Emisor" required="required"
+                           th:field="*{emisor}">
+                </div>
+                <ul>
+                    <li th:each="err : ${#fields.errors('emisor')}" th:text="${err}" class="error" />
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="numeroCuenta">Número de Cuenta</label>
+                    <input type="text" class="form-control" id="numeroCuenta" name="numeroCuenta"
+                           placeholder="Número de Cuenta" required="required"
+                           th:field="*{numeroCuenta}">
+                </div>
+                <ul>
+                    <li th:each="err : ${#fields.errors('numeroCuenta')}" th:text="${err}" class="error" />
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="fechaExpiracion">Fecha de Expiración</label>
+                    <textarea class="form-control" id="fechaExpiracion" name="fechaExpiracion"
+                              cols="10" rows="10"
+                              placeholder="Fecha de Expiracion"
+                              th:field="*{fechaExpiracion}"></textarea>
+                </div>
+                <ul>
+                    <li th:each="err : ${#fields.errors('fechaExpiracion')}" th:text="${err}" class="error" />
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="cvv">CVV</label>
+                    <textarea class="form-control" id="cvv" name="cvv"
+                              cols="3" rows="3"
+                              placeholder="CVV"
+                              th:field="*{cvv}"></textarea>
+                </div>
+                <ul>
+                    <li th:each="err : ${#fields.errors('cvv')}" th:text="${err}" class="error" />
+                </ul>
+            </div>
+            <div class="col-md-3">
+                <br/>
+                <button type="submit" class="btn btn-primary boton">Guardar</button>
+            </div>
+        </div>
+    </form>
+</main>
+<footer th:replace="~{plantillas/plantilla :: footer}"></footer>
+<script>
+    function getCookie(name) {
+        let cookieArr = document.cookie.split(";");
+        for (let i = 0; i < cookieArr.length; i++) {
+            let cookiePair = cookieArr[i].split("=");
+            if (name === cookiePair[0].trim()) {
+                return decodeURIComponent(cookiePair[1]);
+            }
+        }
+        return null;
+    }
+
+    document.getElementById('savePagoForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+        const form = event.target;
+        const formData = new FormData(form);
+        const jwtToken = getCookie('jwt');
+        console.log('jwt: ', jwtToken);
+
+        fetch(form.action, {
+            method: 'POST',
+            headers: {
+                'Authorization': 'Bearer ' + jwtToken
+            },
+            body: formData
+        })
+            .then(response => {
+                if (response.ok) {
+                    console.log('Pago guardado: ', response);
+                    alert('Pago guardado con éxito');
+                    window.location.href = '/';
+                } else {
+                    console.log('Pago no guardado: ', response);
+                    alert('Acceso Negado, tu petición no contiene el JWT');
+                    window.location.href = '/';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error al guardar el pago');
+            });
+    });
+</script>
+</body>
+</html>

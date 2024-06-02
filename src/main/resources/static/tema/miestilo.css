@@ -1,0 +1,71 @@
+html {
+    font-size: 16px; 
+    background-color: #ffe9ec;
+  }
+  
+  @font-face {
+    font-family: 'Butterscotch';
+    src: url('/fonts/Butterscotch.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
+  
+  @font-face {
+    font-family: 'Chocolate';
+    src: url('/fonts/Chocolate.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
+  
+  @font-face {
+    font-family: 'Popsicle';
+    src: url('/fonts/Popsicle.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
+  
+  .butterscotch {
+    font-family: 'Butterscotch', sans-serif;
+  }
+  
+  
+  .chocolate {
+    font-family: 'Chocolate', sans-serif;
+  }
+  
+  .popsicle {
+    font-family: 'Popsicle', sans-serif;
+  }
+
+ 
+.boton {
+  background-color: #5D4037 !important;
+  color: white !important;
+  border-color: #5D4037 !important; 
+  font-family: 'Popsicle', sans-serif;
+  font-size: 1.2rem;
+}
+
+.boton:hover {
+  background-color: #5E2723 !important; 
+  border-color: #5E2723 !important; 
+}
+
+.menu-item {
+  font-family: 'Popsicle', sans-serif;
+  font-size: 1.2rem;
+}
+
+.home-title {
+  font-family: 'Butterscotch', sans-serif;
+  margin-top: 1rem;
+  font-size: 4rem;
+}
+
+.title {
+  margin: 0rem 2.5rem;
+}
+
+.logout{
+  margin-right: 1.5rem;
+}

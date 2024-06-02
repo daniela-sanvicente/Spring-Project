@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{plantillas/plantilla :: head}"></head>
+<body>
+<header th:replace="~{plantillas/plantilla :: navbar_loggedin}"></header>
+<main class="container text-center opacity-75 shadow-lg p-3 mb-5 bg-body-tertiary rounded">
+    <h1 th:text="${contenido}"></h1>
+    <form id="saveCarritoForm" th:action="@{/carrito/salvar-carrito}" th:object="${carrito}" method="post">
+        <div th:if="${#fields.hasErrors('*')}" class='alert alert-danger' role="alert">
+            Verifique los siguientes errores
+            <ul>
+                <li th:each="err : ${#fields.errors('*')}" th:text="${err}"></li>
+            </ul>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="cliente">Cliente</label>
+                    <select class="form-control" th:field="*{cliente.id}" id="cliente" required>
+                        <option value="" disabled selected>Seleccione un cliente</option>
+                        <option th:each="selc : ${selectCliente}" th:value="${selc.id}" th:text="${selc.nombre + ' ' + selc.apellidos}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <br/>
+                <button type="submit" class="btn btn-primary boton">Guardar</button>
+            </div>
+        </div>
+    </form>
+</main>
+<footer th:replace="~{plantillas/plantilla :: footer}"></footer>
+<script>
+    function getCookie(name) {
+        let cookieArr = document.cookie.split(";");
+        for (let i = 0; i < cookieArr.length; i++) {
+            let cookiePair = cookieArr[i].split("=");
+            if (name === cookiePair[0].trim()) {
+                return decodeURIComponent(cookiePair[1]);
+            }
+        }
+        return null;
+    }
+
+    document.getElementById('saveCarritoForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+        const form = event.target;
+        const formData = new FormData(form);
+        const jwtToken = getCookie('jwt');
+        console.log('jwt: ', jwtToken);
+
+        fetch(form.action, {
+            method: 'POST',
+            headers: {
+                'Authorization': 'Bearer ' + jwtToken
+            },
+            body: formData
+        })
+            .then(response => {
+                if (response.ok) {
+                    console.log('Carrito guardado: ', response);
+                    alert('Carrito guardado con éxito');
+                    window.location.href = '/';
+                } else {
+                    console.log('Carrito no guardado: ', response);
+                    alert('Acceso Negado, tu petición no contiene el JWT');
+                    window.location.href = '/';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error al guardar el carrito');
+            });
+    });
+</script>
+</body>
+</html>

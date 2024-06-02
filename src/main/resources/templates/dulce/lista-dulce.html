@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      lang="es">
+<head th:replace="~{plantillas/plantilla :: head}"></head>
+<body>
+    <header th:replace= "~{plantillas/plantilla :: navbar_loggedin}"></header>
+    <main class="container text-center shadow-lg p-3 mb-5 bg-body-tertiary rounded">
+        <h1 th:text="${contenido}"></h1>
+        <table th:if="${!dulce.isEmpty()}" class="table table-striped table-hover table-sm">
+            <thead class="table-dark table-bordered">
+            <tr>
+                <th scope="col">Nombre Dulce</th>
+                <th scope="col">Precio</th>
+                <th scope="col">Tema</th>
+                <th scope="col">Tipo</th>
+                <th scope="col">Stock</th>
+                <th scope="col">Tiempo Elaboración</th>
+                <th scope="col">Descripción</th>
+                <th scope="col">Operaciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="esp: ${dulce}">
+                <td th:text="${esp.nombreDulce}"></td>
+                <td th:text="${esp.precio}"></td>
+                <td th:text="${esp.tema}"></td>
+                <td th:text="${esp.tipo}"></td>
+                <td th:text="${esp.stock}"></td>
+                <td th:text="${esp.tiempoElaboracion}"></td>
+                <td th:text="${esp.descripcion}"></td>
+                <td>
+                    <img th:src="@{'/imagenes/'+${esp.imagen}}" width="20%" height="20%"><br/>
+                </td>
+                <td>
+                    <a th:href="@{/dulce/modificar-dulce/{id} (id=${esp.id})}"
+                       class="btn btn-success">Modificar &nbsp; <i class="fas fa-pen-nib" aria-hidden="true"></i></a>
+                    <a th:href="@{/dulce/eliminar-dulce/{id} (id=${esp.id})}"
+                       class="btn btn-danger">Eliminar &nbsp; <i class="fas fa-trash-alt" aria-hidden="true"></i></a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <nav th:replace="plantillas/pag-nav :: paginador"></nav>
+    </main>
+    <footer th:replace="~{plantillas/plantilla :: footer}"></footer>
+</body>
+</html>

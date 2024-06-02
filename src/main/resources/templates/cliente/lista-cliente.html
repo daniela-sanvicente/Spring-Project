@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      lang="es">
+<head th:replace="~{plantillas/plantilla :: head}"></head>
+<body>
+    <header th:replace= "~{plantillas/plantilla :: navbar_loggedin}"></header>
+    <main class="container text-center shadow-lg p-3 mb-5 bg-body-tertiary rounded">
+        <h1 th:text="${contenido}"></h1>
+        <table th:if="${!cliente.isEmpty()}" class="table table-striped table-hover table-sm">
+            <thead class="table-dark table-bordered">
+                <tr>
+                    <th scope="col">Identificador</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Apellidos</th>
+                    <th scope="col">Correo</th>
+                    <th scope="col">Teléfono Casa</th>
+                    <th scope="col">WhatsApp</th>
+                    <th scope="col">Dirección</th>
+                    <th scope="col">Tipo</th>
+                    <th scope="col">Contraseña</th>
+                    <th scope="col">Operaciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="tp: ${cliente}">
+                    <td th:text="${tp.id}"></td>
+                    <td th:text="${tp.nombre}"></td>
+                    <td th:text="${tp.apellidos}"></td>
+                    <td th:text="${tp.correo}"></td>
+                    <td th:text="${tp.telefonoCasa}"></td>
+                    <td th:text="${tp.whatsapp}"></td>
+                    <td th:text="${tp.direccion}"></td>
+                    <td th:text="${tp.tipo}"></td>
+                    <td th:text="${tp.contrasena}"></td>
+                    <td>
+                        <a th:href="@{/cliente/modificar-cliente/{id} (id=${tp.id})}"
+                           class="btn btn-success">Modificar <i class="fas fa-pen-nib"
+                                aria-hidden="true"></i> </a>
+                        <a th:href="@{/cliente/eliminar-cliente/{id} (id=${tp.id})}"
+                           class="btn btn-danger">Eliminar <i class="fas fa-trash-alt"
+                                                                aria-hidden="true"></i> </a>
+
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <nav th:replace="~{plantillas/pag-nav::paginador}"></nav>
+    </main>
+    <footer th:replace="~{plantillas/plantilla :: footer}"></footer>
+</body>
+</html>

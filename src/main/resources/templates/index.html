@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      lang="es">
+<head th:replace="~{plantillas/plantilla :: head}">
+</head>
+<body>
+<!-- <header th:replace= "~{plantillas/plantilla :: navbar_loggedin}"></header> -->
+<div th:replace="~{plantillas/plantilla :: ${navbar}}"></div>
+<main class="container text-center opacity-75 shadow-lg p-3 mb-5 bg-body-tertiary rounded">
+    <h1 th:text="${contenido}"></h1>
+</main>
+<footer th:replace="~{plantillas/plantilla :: footer}"></footer>
+</body>
+</html>

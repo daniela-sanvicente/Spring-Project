@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      lang="es">
+<head th:replace="~{plantillas/plantilla :: head}"></head>
+<body>
+    <header th:replace= "~{plantillas/plantilla :: navbar_loggedin}"></header>
+    <main class="container text-center shadow-lg p-3 mb-5 bg-body-tertiary rounded">
+        <h1 th:text="${contenido}"></h1>
+        <table th:if="${!pago.isEmpty()}" class="table table-striped table-hover table-sm">
+            <thead class="table-dark table-bordered">
+            <tr>
+                <th scope="col">Identificador</th>
+                <th scope="col">Id Cliente</th>
+                <th scope="col">Id Metodo Pago</th>
+                <th scope="col">Emisor</th>
+                <th scope="col">Número de Cuenta</th>
+                <th scope="col">Fecha de Expiración</th>
+                <th scope="col">CVV</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="esp: ${pago}">
+                <td th:text="${esp.id}"></td>
+                <td th:text="${esp.cliente.id}"></td>
+                <td th:text="${esp.metodoPago.id}"></td>
+                <td th:text="${esp.emisor}"></td>
+                <td th:text="${esp.numeroCuenta}"></td>
+                <td th:text="${esp.fechaExpiracion}"></td>
+                <td th:text="${esp.cvv}"></td>
+                <td>
+                    <a th:href="@{/pago/modificar-pago/{id} (id=${esp.id})}"
+                       class="btn btn-success">Modificar &nbsp; <i class="fas fa-pen-nib" aria-hidden="true"></i></a>
+                    <a th:href="@{/pago/eliminar-pago/{id} (id=${esp.id})}"
+                       class="btn btn-danger">Eliminar &nbsp; <i class="fas fa-trash-alt" aria-hidden="true"></i></a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <nav th:replace="plantillas/pag-nav :: paginador"></nav>
+    </main>
+    <footer th:replace="~{plantillas/plantilla :: footer}"></footer>
+</body>
+</html>

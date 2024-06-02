@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{plantillas/plantilla :: head}"></head>
+<body>
+<header th:replace= "~{plantillas/plantilla :: navbar_loggedin}"></header>
+<main class="container text-center opacity-75 shadow-lg p-3 mb-5 bg-body-tertiary rounded">
+    <h1 th:text="${contenido}"></h1>
+    <form id="saveDulceForm" th:action="@{/dulce/salvar-dulce}" th:object="${dulce}" method="post">
+        <div th:if="${#fields.hasErrors('*')}" class='alert alert-danger' role="alert">
+            Verifique los siguientes errores
+            <ul>
+                <li th:each="err : ${#fields.errors('*')}" th:text="${err}"/>
+            </ul>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="nombreDulce">Nombre del dulce</label>
+                    <input type="text" class="form-control" id="nombreDulce" name="nombreDulce"
+                           placeholder="Nombre del dulce" required="required"
+                           th:field="*{nombreDulce}">
+                </div>
+                <ul>
+                    <li th:each="err : ${#fields.errors('nombreDulce')}" th:text="${err}" class="error" />
+                </ul>
+            </div>
+            <div class="row gx-5">
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <label for="precio">Precio</label>
+                        <input type="text" class="form-control" id="precio" name="precio"
+                               placeholder="Ejemplo 32.43" required
+                               pattern="^\d*(\.\d{0,2})?$"
+                               th:value="${dulce.precio}">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="tema">Tema</label>
+                        <input type="text" class="form-control" id="tema" name="tema"
+                               placeholder="Tema" required="required"
+                               th:field="*{tema}">
+                    </div>
+                    <ul>
+                        <li th:each="err : ${#fields.errors('tema')}" th:text="${err}" class="error" />
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="tipo">Tipo</label>
+                        <input type="text" class="form-control" id="tipo" name="tipo"
+                               placeholder="Tipo" required="required"
+                               th:field="*{tipo}">
+                    </div>
+                    <ul>
+                        <li th:each="err : ${#fields.errors('tipo')}" th:text="${err}" class="error" />
+                    </ul>
+                </div>
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <label for="stock">Stock</label>
+                        <input type="number" class="form-control" id="stock" name="stock"
+                               placeholder="Stock" required
+                               min="1" max="100"
+                               th:value="${dulce.stock}">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="tiempoElaboracion">Tiempo de Elaboración</label>
+                        <input type="text" class="form-control" id="tiempoElaboracion" name="tiempoElaboracion"
+                               placeholder="Tiempo de Elaboración" required="required"
+                               th:field="*{tiempoElaboracion}">
+                    </div>
+                    <ul>
+                        <li th:each="err : ${#fields.errors('tiempoElaboracion')}" th:text="${err}" class="error" />
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="descripcion">Descripción</label>
+                        <input type="text" class="form-control" id="descripcion" name="descripcion"
+                               placeholder="Descripción" required="required"
+                               th:field="*{descripcion}">
+                    </div>
+                    <ul>
+                        <li th:each="err : ${#fields.errors('descripcion')}" th:text="${err}" class="error" />
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="imagen">Imagen</label>
+                        <input type="text" class="form-control" id="imagen" name="imagen"
+                               placeholder="Enlace en el sitio externo (S3, Bucket, etc.)" 
+                               th:field="*{imagen}">
+                    </div>
+                    <ul>
+                        <li th:each="err : ${#fields.errors('imagen')}" th:text="${err}" class="error" />
+                    </ul>
+                </div>
+            <div class="col-md-3">
+                <br/>
+                <button type="submit" class="btn btn-primary boton">Guardar</button>
+            </div>
+          </div>
+        </div>
+    </form>
+</main>
+<footer th:replace="~{plantillas/plantilla :: footer}"></footer>
+<script>
+    function getCookie(name) {
+        let cookieArr = document.cookie.split(";");
+        for (let i = 0; i < cookieArr.length; i++) {
+            let cookiePair = cookieArr[i].split("=");
+            if (name === cookiePair[0].trim()) {
+                return decodeURIComponent(cookiePair[1]);
+            }
+        }
+        return null;
+    }
+
+    document.getElementById('saveDulceForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const form = event.target;
+        const formData = new FormData(form);
+        const jwtToken = getCookie('jwt');
+        console.log('jwt: ', jwtToken);
+
+        fetch(form.action, {
+            method: 'POST',
+            headers: {
+                'Authorization': 'Bearer ' + jwtToken
+            },
+            body: formData
+        })
+        .then(response => {
+            if (response.ok) {
+                console.log('Dulce guardado: ', response);
+                alert('Dulce guardado con éxito');
+                window.location.href = '/';
+            } else {
+                console.log('Dulce no guardado: ', response);
+                alert('Acceso Negado, tu petición no contiene el JWT');
+                window.location.href = '/';
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error al guardar el dulce');
+        });
+    });
+</script>
+</body>
+</html>

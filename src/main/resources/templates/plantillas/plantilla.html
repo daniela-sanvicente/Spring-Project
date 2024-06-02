@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:fragment="head">
+    <meta charset="UTF-8">
+    <title>Spring</title>
+    <link href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" rel="stylesheet">
+    <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/bootstrap/css/jquery-ui.min.css}" rel="stylesheet">
+    <link th:href="@{/tema/miestilo.css}" rel="stylesheet">
+</head>
+<body>
+    <div th:fragment="navbar_loggedout">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <a class="navbar-brand" th:href="@{/}">
+                <div class="butterscotch title">Tienda de Dulces</div></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                </ul>
+                <div class="d-flex">
+                    <a id="loginBtn" class="btn btn-outline-primary me-2 boton" th:href="@{/login}">Login</a>
+                    <a id="registerBtn" class="btn btn-outline-primary me-2 boton" th:href="@{/cliente/registrar}">Registrar</a>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+    <div th:fragment="navbar_loggedin">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <a class="navbar-brand" th:href="@{/}">
+                <div class="butterscotch title">Tienda de Dulces</div></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle menu-item" href="#" id="dulceDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Dulce</a>
+                        <ul class="dropdown-menu" aria-labelledby="dulceDropdown">
+                            <li><a class="dropdown-item" th:href="@{/dulce/lista-dulce}">Buscar Dulce</a></li>
+                            <li><a class="dropdown-item" th:href="@{/dulce/alta-dulce}">Alta Dulce</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle menu-item" href="#" id="arregloDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Arreglo</a>
+                        <ul class="dropdown-menu" aria-labelledby="arregloDropdown">
+                            <li><a class="dropdown-item" th:href="@{/arreglo/lista-arreglo}">Buscar Arreglo</a></li>
+                            <li><a class="dropdown-item" th:href="@{/arreglo/alta-arreglo}">Alta Arreglo</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle menu-item" href="#" id="mesaDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Mesa</a>
+                        <ul class="dropdown-menu" aria-labelledby="mesaDropdown">
+                            <li><a class="dropdown-item" th:href="@{/mesa/lista-mesa}">Buscar Mesa</a></li>
+                            <li><a class="dropdown-item" th:href="@{/mesa/alta-mesa}">Alta Mesa</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle menu-item" href="#" id="clienteDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Cliente</a>
+                        <ul class="dropdown-menu" aria-labelledby="clienteDropdown">
+                            <li><a class="dropdown-item" th:href="@{/cliente/lista-cliente}">Buscar Cliente</a></li>
+                            <li><a class="dropdown-item" th:href="@{/cliente/alta-cliente}">Alta Cliente</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle menu-item" href="#" id="ordenDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Orden</a>
+                        <ul class="dropdown-menu" aria-labelledby="ordenDropdown">
+                            <li><a class="dropdown-item" th:href="@{/orden/lista-orden}">Buscar Orden</a></li>
+                            <li><a class="dropdown-item" th:href="@{/orden/alta-orden}">Alta Orden</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle menu-item" href="#" id="metodoPagoDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Método Pago</a>
+                        <ul class="dropdown-menu" aria-labelledby="metodoPagoDropdown">
+                            <li><a class="dropdown-item" th:href="@{/metodoPago/lista-metodoPago}">Buscar Método Pago</a></li>
+                            <li><a class="dropdown-item" th:href="@{/metodoPago/alta-metodoPago}">Alta Método Pago</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle menu-item" href="#" id="pagoDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Pago</a>
+                        <ul class="dropdown-menu" aria-labelledby="pagoDropdown">
+                            <li><a class="dropdown-item" th:href="@{/pago/lista-pago}">Buscar Pago</a></li>
+                            <li><a class="dropdown-item" th:href="@{/pago/alta-pago}">Alta Pago</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle menu-item" href="#" id="itemCarritoDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Item Carrito</a>
+                        <ul class="dropdown-menu" aria-labelledby="itemCarritoDropdown">
+                            <li><a class="dropdown-item" th:href="@{/itemCarrito/lista-itemCarrito}">Buscar Item Carrito</a></li>
+                            <li><a class="dropdown-item" th:href="@{/itemCarrito/alta-itemCarrito}">Alta Item Carrito</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle menu-item" href="#" id="lineaOrdenDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Linea Orden</a>
+                        <ul class="dropdown-menu" aria-labelledby="lineaOrdenDropdown">
+                            <li><a class="dropdown-item" th:href="@{/lineaOrden/lista-lineaOrden}">Buscar Linea Orden</a></li>
+                            <li><a class="dropdown-item" th:href="@{/lineaOrden/alta-lineaOrden}">Alta Linea Orden</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle menu-item" href="#" id="carritoDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Carrito</a>
+                        <ul class="dropdown-menu" aria-labelledby="carritoDropdown">
+                            <li><a class="dropdown-item" th:href="@{/carrito/lista-carrito}">Buscar Carrito</a></li>
+                            <li><a class="dropdown-item" th:href="@{/carrito/alta-carrito}">Alta Carrito</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <div class="d-flex">
+                    <form id="logoutForm" th:action="@{/logout}" method="post">
+                        <button id="logoutBtn" class="btn btn-outline-primary boton logout" type="submit">Cerrar Sesion</button>
+                    </form>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+    <footer th:fragment="footer">
+        <div class="container text-center">
+            <br/>
+            <img th:src="@{/imagen/logo.jpeg}" height="25%" width="25%"/>
+        <p class="home-title">Tienda de Dulces</p>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
+    <script th:src="@{/bootstrap/js/jquery-3.6.3.js}"></script>
+    <script th:src="@{/bootstrap/js/jquery-ui.min.js}"></script>
+</footer>
+</body>
+</html>

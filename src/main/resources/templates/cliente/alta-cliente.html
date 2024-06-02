@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      lang="es">
+<head th:replace="~{plantillas/plantilla :: head}"></head>
+<body>
+<header th:replace= "~{plantillas/plantilla :: navbar_loggedin}"></header>
+<main class="container text-center shadow-lg p-3 mb-5 bg-body-tertiary rounded">
+    <h1 th:text="${contenido}"></h1>
+    <form id= "saveClienteForm" th:action="@{/cliente/salvar-cliente}" th:object="${cliente}" method="post">
+        <div th:if="${#fields.hasErrors('*')}" class='alert alert-danger' role="alert">
+            Verifique los siguientes errores
+            <ul>
+                <li th:each="err : ${#fields.errors('*')}" th:text="${err}"/>
+            </ul>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="nombre">Nombre del Cliente</label>
+                    <input type="text" class="form-control" id="nombre" name="nombre"
+                           placeholder="Nombre del cliente"
+                           th:field="*{nombre}">
+                </div>
+                <ul>
+                    <li th:each="err : ${#fields.errors('nombre')}" th:text="${err}" class="error" />
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="apellidos">Apellidos</label>
+                    <input type="text" class="form-control" id="apellidos" name="apellidos"
+                           placeholder="Apellidos"
+                           th:field="*{apellidos}">
+                </div>
+                <ul>
+                    <li th:each="err : ${#fields.errors('apellidos')}" th:text="${err}" class="error" />
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="correo">Correo Electrónico</label>
+                    <input type="text" class="form-control" id="correo" name="correo"
+                           placeholder="Ejemplo demo@demo.dgtic"
+                           th:field="*{correo}">
+                </div>
+                <ul>
+                    <li th:each="err : ${#fields.errors('correo')}" th:text="${err}" class="error" />
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="telefonoCasa">Telefono Casa</label>
+                    <input type="text" class="form-control" id="telefonoCasa" name="telefonoCasa"
+                           placeholder="Ejemplo 5556911167"
+                           th:field="*{telefonoCasa}">
+                </div>
+                <ul>
+                    <li th:each="err : ${#fields.errors('telefonoCasa')}" th:text="${err}" class="error" />
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="whatsapp">WhatsApp</label>
+                    <input type="text" class="form-control" id="whatsapp" name="whatsapp"
+                           placeholder="Ejemplo 5514204601"
+                           th:field="*{whatsapp}">
+                </div>
+                <ul>
+                    <li th:each="err : ${#fields.errors('whatsapp')}" th:text="${err}" class="error" />
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="direccion">Dirección</label>
+                    <textarea class="form-control" id="direccion" name="direccion"
+                              cols="10" rows="10"
+                              placeholder="Direccion"
+                              th:field="*{direccion}"></textarea>
+                </div>
+                <ul>
+                    <li th:each="err : ${#fields.errors('direccion')}" th:text="${err}" class="error" />
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="tipo">Tipo</label>
+                    <input type="text" class="form-control" id="tipo" name="tipo"
+                           placeholder="Ejemplo revendedor"
+                           th:field="*{tipo}">
+                </div>
+                <ul>
+                    <li th:each="err : ${#fields.errors('tipo')}" th:text="${err}" class="error" />
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="contrasena">Contraseña</label>
+                    <input type="text" class="form-control" id="contrasena" name="contrasena"
+                           placeholder="Contraseña"
+                           th:field="*{contrasena}">
+                </div>
+                <ul>
+                    <li th:each="err : ${#fields.errors('contrasena')}" th:text="${err}" class="error" />
+                </ul>
+            </div>
+            <div class="col-md-3">
+                <br/>
+                <button type="submit" class="btn btn-primary boton">Guardar</button>
+            </div>
+        </div>
+    </form>
+</main>
+<footer th:replace="~{plantillas/plantilla :: footer}"></footer>
+<script>
+    function getCookie(name) {
+        let cookieArr = document.cookie.split(";");
+        for (let i = 0; i < cookieArr.length; i++) {
+            let cookiePair = cookieArr[i].split("=");
+            if (name === cookiePair[0].trim()) {
+                return decodeURIComponent(cookiePair[1]);
+            }
+        }
+        return null;
+    }
+
+    document.getElementById('saveClienteForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+        const form = event.target;
+        const formData = new FormData(form);
+        const jwtToken = getCookie('jwt');
+        console.log('jwt: ', jwtToken);
+
+        fetch(form.action, {
+            method: 'POST',
+            headers: {
+                'Authorization': 'Bearer ' + jwtToken
+            },
+            body: formData
+        })
+            .then(response => {
+                if (response.ok) {
+                    console.log('Cliente guardado: ', response);
+                    alert('Cliente guardado con éxito');
+                    window.location.href = '/';
+                } else {
+                    console.log('Cliente no guardado: ', response);
+                    alert('Acceso Negado, tu petición no contiene el JWT');
+                    window.location.href = '/';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error al guardar el cliente');
+            });
+    });
+</script>
+</body>
+</html>
